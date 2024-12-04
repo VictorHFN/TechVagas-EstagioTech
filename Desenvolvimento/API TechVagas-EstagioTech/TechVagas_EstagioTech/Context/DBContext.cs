@@ -31,6 +31,8 @@ namespace TechVagas_EstagioTech.Data
         public DbSet<UsuarioModel> Usuario { get; set; }
         public DbSet<SessaoModel> Sessao { get; set; }
         public DbSet<LoginModel> Login { get; set; }
+        public DbSet<CandidatoModel> Candidatos { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //LIMITANDO O MÁXIMO DE CARACTERES
@@ -180,9 +182,11 @@ namespace TechVagas_EstagioTech.Data
             modelBuilder.Entity<SessaoModel>().Property(b => b.NivelAcesso);
             modelBuilder.Entity<SessaoModel>().HasOne(b => b.UsuarioModel).WithMany().HasForeignKey(b => b.UsuarioId);
 
+            //Candidatos
+            modelBuilder.Entity<CandidatoModel>().HasKey(b => b.CandidatoId);
+
             // Relacionamento: Usuario -> Sessao
             modelBuilder.Entity<UsuarioModel>().HasMany(p => p.Sessoes).WithOne(b => b.UsuarioModel).IsRequired().OnDelete(DeleteBehavior.Cascade);
-
 
             //Relacionamento: Vagas -> Cargo
             modelBuilder.Entity<VagasModel>()
@@ -197,6 +201,20 @@ namespace TechVagas_EstagioTech.Data
                 .HasMany(x => x.Vagas)
                 .WithOne(y => y.Concedente)
                 .IsRequired().OnDelete(DeleteBehavior.Cascade);
+
+            // Relacionamento: Candidato -> Aluno
+            modelBuilder.Entity<CandidatoModel>()
+                .HasOne(c => c.Alunos)  // Candidato tem um Aluno
+                .WithMany()  // Aluno pode ter vários Candidatos
+                .HasForeignKey(c => c.AlunoId)  // A chave estrangeira será AlunoId
+                .IsRequired();  // O relacionamento é obrigatório
+
+            // Relacionamento: Candidato -> Vaga
+            modelBuilder.Entity<CandidatoModel>()
+                .HasOne(c => c.Vagas)  // Candidato tem uma Vaga
+                .WithMany()  // Vaga pode ter vários Candidatos
+                .HasForeignKey(c => c.VagaId)  // A chave estrangeira será VagaId
+                .IsRequired();  // O relacionamento é obrigatório
 
             //Relacionamento: Documento -> Documento Versão
             modelBuilder.Entity<DocumentoVersaoModel>().HasKey(x => x.idDocumentoVersao);

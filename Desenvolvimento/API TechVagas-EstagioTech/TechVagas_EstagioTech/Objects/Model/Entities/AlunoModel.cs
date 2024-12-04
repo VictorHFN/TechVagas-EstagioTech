@@ -71,5 +71,7 @@ namespace TechVagas_EstagioTech.Objects.Model.Entities
 
         public virtual ICollection<AlunoModel>? Alunos { get; set; }
 
+        public ICollection<CandidatoModel> Candidatos { get; set; } = new List<CandidatoModel>();
+
     }
 }

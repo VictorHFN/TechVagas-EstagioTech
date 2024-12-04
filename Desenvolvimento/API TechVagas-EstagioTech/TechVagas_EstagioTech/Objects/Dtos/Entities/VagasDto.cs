@@ -63,5 +63,8 @@ namespace TechVagas_EstagioTech.Objects.Dtos.Entities
 
         [ForeignKey("cargoid")]
         public int CargoId { get; set; }
+
+        [JsonIgnore]
+        public ICollection<CandidatoModel> Candidatos { get; set; } = new List<CandidatoModel>();
     }
 }

@@ -112,5 +112,8 @@ namespace TechVagas_EstagioTech.Objects.Dtos.Entities
         [Column("alunoid")]
         public ICollection<AlunoModel>? Alunos { get; set; }
 
+        [JsonIgnore]
+        public ICollection<CandidatoModel> Candidatos { get; set; } = new List<CandidatoModel>();
+
     }
 }
