@@ -202,19 +202,20 @@ namespace TechVagas_EstagioTech.Data
                 .WithOne(y => y.Concedente)
                 .IsRequired().OnDelete(DeleteBehavior.Cascade);
 
-            // Relacionamento: Candidato -> Aluno
             modelBuilder.Entity<CandidatoModel>()
+                // Relacionamento: Candidato -> Aluno
                 .HasOne(c => c.Alunos)  // Candidato tem um Aluno
-                .WithMany()  // Aluno pode ter vários Candidatos
+                .WithMany()  // Aluno não tem uma coleção de Candidatos
                 .HasForeignKey(c => c.AlunoId)  // A chave estrangeira será AlunoId
                 .IsRequired();  // O relacionamento é obrigatório
 
-            // Relacionamento: Candidato -> Vaga
             modelBuilder.Entity<CandidatoModel>()
+                // Relacionamento: Candidato -> Vaga
                 .HasOne(c => c.Vagas)  // Candidato tem uma Vaga
-                .WithMany()  // Vaga pode ter vários Candidatos
+                .WithMany()  // Vaga não tem uma coleção de Candidatos
                 .HasForeignKey(c => c.VagaId)  // A chave estrangeira será VagaId
                 .IsRequired();  // O relacionamento é obrigatório
+
 
             //Relacionamento: Documento -> Documento Versão
             modelBuilder.Entity<DocumentoVersaoModel>().HasKey(x => x.idDocumentoVersao);

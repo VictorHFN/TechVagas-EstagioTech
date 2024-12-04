@@ -45,7 +45,6 @@ namespace TechVagas_EstagioTech.Objects.Model.Entities
         public CargoModel? Cargo { get; set; }
         public int CargoId { get; set; }
 
-        public ICollection<CandidatoModel> Candidatos { get; set; } = new List<CandidatoModel>();
 
 
     }

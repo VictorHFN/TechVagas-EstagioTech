@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TechVagas_EstagioTech.Migrations
 {
     /// <inheritdoc />
-    public partial class teste : Migration
+    public partial class inicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,17 +39,11 @@ namespace TechVagas_EstagioTech.Migrations
                     endereco = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     genero = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     bairro = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
-                    cep = table.Column<string>(type: "character varying(9)", maxLength: 9, nullable: false),
-                    AlunoModelAlunoId = table.Column<int>(type: "integer", nullable: true)
+                    cep = table.Column<string>(type: "character varying(9)", maxLength: 9, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_aluno", x => x.alunoid);
-                    table.ForeignKey(
-                        name: "FK_aluno_aluno_AlunoModelAlunoId",
-                        column: x => x.AlunoModelAlunoId,
-                        principalTable: "aluno",
-                        principalColumn: "alunoid");
                 });
 
             migrationBuilder.CreateTable(
@@ -451,6 +445,34 @@ namespace TechVagas_EstagioTech.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "candidato",
+                columns: table => new
+                {
+                    candidatoid = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    datacandidatura = table.Column<DateOnly>(type: "date", nullable: false),
+                    statusvaga = table.Column<int>(type: "integer", nullable: false),
+                    alunoid = table.Column<int>(type: "integer", nullable: false),
+                    vagaid = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_candidato", x => x.candidatoid);
+                    table.ForeignKey(
+                        name: "FK_candidato_aluno_alunoid",
+                        column: x => x.alunoid,
+                        principalTable: "aluno",
+                        principalColumn: "alunoid",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_candidato_vagas_vagaid",
+                        column: x => x.vagaid,
+                        principalTable: "vagas",
+                        principalColumn: "vagasid",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "documentoversao",
                 columns: table => new
                 {
@@ -599,11 +621,6 @@ namespace TechVagas_EstagioTech.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_aluno_AlunoModelAlunoId",
-                table: "aluno",
-                column: "AlunoModelAlunoId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_apontamento_coordenadorestagioid",
                 table: "apontamento",
                 column: "coordenadorestagioid");
@@ -612,6 +629,16 @@ namespace TechVagas_EstagioTech.Migrations
                 name: "IX_apontamento_CoordenadorEstagioModelidCoordenadorEstagio",
                 table: "apontamento",
                 column: "CoordenadorEstagioModelidCoordenadorEstagio");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_candidato_alunoid",
+                table: "candidato",
+                column: "alunoid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_candidato_vagaid",
+                table: "candidato",
+                column: "vagaid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_contratoestagio_CoordenadorEstagioidCoordenadorEstagio",
@@ -719,6 +746,9 @@ namespace TechVagas_EstagioTech.Migrations
         {
             migrationBuilder.DropTable(
                 name: "apontamento");
+
+            migrationBuilder.DropTable(
+                name: "candidato");
 
             migrationBuilder.DropTable(
                 name: "contratoestagio");

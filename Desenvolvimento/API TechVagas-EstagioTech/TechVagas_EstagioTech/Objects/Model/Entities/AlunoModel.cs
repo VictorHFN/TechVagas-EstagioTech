@@ -46,7 +46,7 @@ namespace TechVagas_EstagioTech.Objects.Model.Entities
         public string? Cidade { get; set; }
 
         [Column("datanascimento")]
-        public DateTime DataNascimento { get; set; }
+        public DateOnly DataNascimento { get; set; }
 
         [Column("nivelescolaridade")]
         public string? NivelEscolaridade { get; set; }
@@ -69,9 +69,8 @@ namespace TechVagas_EstagioTech.Objects.Model.Entities
         [Column("cep")]
         public string? Cep { get; set; }
 
-        public virtual ICollection<AlunoModel>? Alunos { get; set; }
+        //public virtual ICollection<AlunoModel>? Alunos { get; set; }
 
-        public ICollection<CandidatoModel> Candidatos { get; set; } = new List<CandidatoModel>();
 
     }
 }

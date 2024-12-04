@@ -12,8 +12,8 @@ using TechVagas_EstagioTech.Data;
 namespace TechVagas_EstagioTech.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20241204041416_teste")]
-    partial class teste
+    [Migration("20241204212031_inicial")]
+    partial class inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -190,9 +190,6 @@ namespace TechVagas_EstagioTech.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AlunoId"));
 
-                    b.Property<int?>("AlunoModelAlunoId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("AreaInteresse")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -308,8 +305,6 @@ namespace TechVagas_EstagioTech.Migrations
 
                     b.HasKey("AlunoId");
 
-                    b.HasIndex("AlunoModelAlunoId");
-
                     b.ToTable("aluno");
                 });
 
@@ -347,6 +342,40 @@ namespace TechVagas_EstagioTech.Migrations
                     b.HasIndex("idCoordenadorEstagio");
 
                     b.ToTable("apontamento");
+                });
+
+            modelBuilder.Entity("TechVagas_EstagioTech.Objects.Model.Entities.CandidatoModel", b =>
+                {
+                    b.Property<int>("CandidatoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("candidatoid");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CandidatoId"));
+
+                    b.Property<int>("AlunoId")
+                        .HasColumnType("integer")
+                        .HasColumnName("alunoid");
+
+                    b.Property<DateOnly>("DataCandidatura")
+                        .HasColumnType("date")
+                        .HasColumnName("datacandidatura");
+
+                    b.Property<int>("StatusVaga")
+                        .HasColumnType("integer")
+                        .HasColumnName("statusvaga");
+
+                    b.Property<int>("VagaId")
+                        .HasColumnType("integer")
+                        .HasColumnName("vagaid");
+
+                    b.HasKey("CandidatoId");
+
+                    b.HasIndex("AlunoId");
+
+                    b.HasIndex("VagaId");
+
+                    b.ToTable("candidato");
                 });
 
             modelBuilder.Entity("TechVagas_EstagioTech.Objects.Model.Entities.CargoModel", b =>
@@ -1257,13 +1286,6 @@ namespace TechVagas_EstagioTech.Migrations
                     b.Navigation("UsuarioModel");
                 });
 
-            modelBuilder.Entity("TechVagas_EstagioTech.Objects.Model.Entities.AlunoModel", b =>
-                {
-                    b.HasOne("TechVagas_EstagioTech.Objects.Model.Entities.AlunoModel", null)
-                        .WithMany("Alunos")
-                        .HasForeignKey("AlunoModelAlunoId");
-                });
-
             modelBuilder.Entity("TechVagas_EstagioTech.Objects.Model.Entities.ApontamentoModel", b =>
                 {
                     b.HasOne("TechVagas_EstagioTech.Objects.Model.Entities.CoordenadorEstagioModel", null)
@@ -1277,6 +1299,25 @@ namespace TechVagas_EstagioTech.Migrations
                         .IsRequired();
 
                     b.Navigation("CoordenadorEstagio");
+                });
+
+            modelBuilder.Entity("TechVagas_EstagioTech.Objects.Model.Entities.CandidatoModel", b =>
+                {
+                    b.HasOne("TechVagas_EstagioTech.Objects.Model.Entities.AlunoModel", "Alunos")
+                        .WithMany()
+                        .HasForeignKey("AlunoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TechVagas_EstagioTech.Objects.Model.Entities.VagasModel", "Vagas")
+                        .WithMany()
+                        .HasForeignKey("VagaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Alunos");
+
+                    b.Navigation("Vagas");
                 });
 
             modelBuilder.Entity("TechVagas_EstagioTech.Objects.Model.Entities.ContratoEstagioModel", b =>
@@ -1423,11 +1464,6 @@ namespace TechVagas_EstagioTech.Migrations
             modelBuilder.Entity("TechVagas_EstagioTech.Model.Entities.UsuarioModel", b =>
                 {
                     b.Navigation("Sessoes");
-                });
-
-            modelBuilder.Entity("TechVagas_EstagioTech.Objects.Model.Entities.AlunoModel", b =>
-                {
-                    b.Navigation("Alunos");
                 });
 
             modelBuilder.Entity("TechVagas_EstagioTech.Objects.Model.Entities.ConcedenteModel", b =>

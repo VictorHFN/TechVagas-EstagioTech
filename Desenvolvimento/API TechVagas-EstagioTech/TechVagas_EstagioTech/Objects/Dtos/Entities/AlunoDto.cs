@@ -66,7 +66,7 @@ namespace TechVagas_EstagioTech.Objects.Dtos.Entities
         [MaxLength(50)]
         public string? Cidade { get; set; }
 
-        public DateTime DataNascimento { get; set; }
+        public DateOnly DataNascimento { get; set; }
 
 
         [Required(ErrorMessage = "E necessário informar seu nivel de escolaridade")]
@@ -112,8 +112,7 @@ namespace TechVagas_EstagioTech.Objects.Dtos.Entities
         [Column("alunoid")]
         public ICollection<AlunoModel>? Alunos { get; set; }
 
-        [JsonIgnore]
-        public ICollection<CandidatoModel> Candidatos { get; set; } = new List<CandidatoModel>();
+
 
     }
 }
